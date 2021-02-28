@@ -4,7 +4,7 @@ from rbm import RestrictedBoltzmannMachine
 
 class DeepBeliefNet():
     """
-    Deep Belief Network class. B
+    Deep Belief Network class.
     For more details : Hinton, Osindero, Teh (2006). A fast learning algorithm for deep belief nets.
     Available at: https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf
 

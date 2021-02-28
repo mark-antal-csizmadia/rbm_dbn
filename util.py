@@ -1,46 +1,58 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def sigmoid(support):
-    
-    """ 
-    Sigmoid activation function that finds probabilities to turn ON each unit. 
-        
-    Args:
-      support: shape is (size of mini-batch, size of layer)      
-    Returns:
-      on_probabilities: shape is (size of mini-batch, size of layer)      
+    """ Sigmoid activation function that finds probabilities to turn ON each unit.
+
+    Parameters
+    ----------
+    support : numpy.ndarray
+        Input to sigmoid, of shape: (size of mini-batch, size of layer)
+
+    Returns
+    -------
+    on_probabilities : numpy.ndarray
+        Sigmoid output, probabilities, of shape: (size of mini-batch, size of layer)
     """
-    
-    on_probabilities = 1./(1.+np.exp(-support))
+    on_probabilities = 1./(1. + np.exp(-support))
+
     return on_probabilities
 
+
 def softmax(support):
+    """ Softmax activation function that finds probabilities of each category
 
-    """ 
-    Softmax activation function that finds probabilities of each category
-        
-    Args:
-      support: shape is (size of mini-batch, number of categories)      
-    Returns:
-      probabilities: shape is (size of mini-batch, number of categories)      
+    Parameters
+    ----------
+    support : numpy.ndarray
+        Input to softmax, of shape: (size of mini-batch, number of categories)
+
+    Returns
+    -------
+    numpy.ndarray
+        Softmax output, probabilities, of shape: (size of mini-batch, number of categories)
     """
+    expsup = np.exp(support-np.max(support, axis=1)[:, None])
 
-    expsup = np.exp(support-np.max(support,axis=1)[:,None])
-    return expsup / np.sum(expsup,axis=1)[:,None]
+    return expsup / np.sum(expsup, axis=1)[:, None]
 
-def sample_binary(on_probabilities):    
 
-    """ 
-    Sample activations ON=1 (OFF=0) from probabilities sigmoid probabilities
-        
-    Args:
-      support: shape is (size of mini-batch, size of layer)      
-    Returns:
-      activations: shape is (size of mini-batch, size of layer)      
+def sample_binary(on_probabilities):
+    """ Sample activations ON=1 (OFF=0) from probabilities sigmoid probabilities
+
+    Parameters
+    ----------
+    on_probabilities : numpy.ndarray
+        Input to sampling, probabilities, of shape: (size of mini-batch, size of layer)
+
+    Returns
+    -------
+    activations : numpy.ndarray
+        Sampling output, activations from distribution, of shape: (size of mini-batch, size of layer)
     """
+    activations = 1. * (on_probabilities >= np.random.random_sample(size=on_probabilities.shape))
 
-    activations = 1. * ( on_probabilities >= np.random.random_sample(size=on_probabilities.shape) )
     return activations
 
 def sample_categorical(probabilities):
