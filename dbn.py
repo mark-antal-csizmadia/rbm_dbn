@@ -160,7 +160,7 @@ class DeepBeliefNet():
         n_labels = true_lbl.shape[1]
 
         records = []        
-        fig,ax = plt.subplots(1,1,figsize=(3,3))
+        fig, ax = plt.subplots(1,1,figsize=(3,3))
         plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
         ax.set_xticks([]); ax.set_yticks([])
 
@@ -242,7 +242,7 @@ class DeepBeliefNet():
             pen_lbl = np.concatenate((pen, lbl_trainset), axis=1)
             self.rbm_stack["pen+lbl--top"].cd1(pen_lbl, n_iterations)
 
-            self.savetofile_rbm(loc="trained_rbm",name="pen+lbl--top")            
+            self.savetofile_rbm(loc="trained_rbm", name="pen+lbl--top")
 
         return
 

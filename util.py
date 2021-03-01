@@ -55,81 +55,136 @@ def sample_binary(on_probabilities):
 
     return activations
 
-def sample_categorical(probabilities):
 
-    """ 
-    Sample one-hot activations from categorical probabilities
-        
-    Args:
-      support: shape is (size of mini-batch, number of categories)      
-    Returns:
-      activations: shape is (size of mini-batch, number of categories)      
+def sample_categorical(probabilities):
+    """ Sample one-hot activations from categorical probabilities
+
+    Parameters
+    ----------
+    probabilities : numpy.ndarray
+        Input to categorical sampling, probabilities, of shape: (size of mini-batch, number of categories)
+
+    Returns
+    -------
+    activations : numpy.ndarray
+        Sampling output, activations from distribution, of shape: (size of mini-batch, number of categories)
     """
-    
-    cumsum = np.cumsum(probabilities,axis=1)
-    rand = np.random.random_sample(size=probabilities.shape[0])[:,None]    
+    cumsum = np.cumsum(probabilities, axis=1)
+    rand = np.random.random_sample(size=probabilities.shape[0])[:, None]
     activations = np.zeros(probabilities.shape)
-    activations[range(probabilities.shape[0]),np.argmax((cumsum >= rand),axis=1)] = 1
+    activations[range(probabilities.shape[0]), np.argmax((cumsum >= rand), axis=1)] = 1
     return activations
 
-def load_idxfile(filename):
 
-    """
-    Load idx file format. For more information : http://yann.lecun.com/exdb/mnist/ 
+def load_idxfile(filename):
+    """  Load idx file format. For more information : http://yann.lecun.com/exdb/mnist/
+
+    Parameters
+    ----------
+    filename : str
+        Path to file to be read.
+
+    Returns
+    -------
+    data : numpy.ndarray
+        Data, of shape: (number of data points, number of features)
     """
     import struct
         
     with open(filename,'rb') as _file:
         if ord(_file.read(1)) != 0 or ord(_file.read(1)) != 0 :
            raise Exception('Invalid idx file: unexpected magic number!')
-        dtype,ndim = ord(_file.read(1)),ord(_file.read(1))
+
+        dtype, ndim = ord(_file.read(1)), ord(_file.read(1))
         shape = [struct.unpack(">I", _file.read(4))[0] for _ in range(ndim)]
         data = np.fromfile(_file, dtype=np.dtype(np.uint8).newbyteorder('>')).reshape(shape)
+
     return data
-    
-def read_mnist(dim=[28,28],n_train=60000,n_test=1000):
 
+
+def read_mnist(dim=[28,28], n_train=60000, n_test=1000):
+    """  Read mnist train and test data. Images are normalized to be in range [0,1]. Labels are one-hot coded.
+
+    Parameters
+    ----------
+    dim : list
+        Dimensions of images, two elements, bot int, width and height.
+    n_train : int
+        Number of training instances.
+    n_test : int
+        Number of test instances.
+
+    Returns
+    -------
+    tuple
+        Data, tuple of 4 elements, each is numpy.ndarray, 1st and 3rd are the training and the test datasets,
+        2nd and 4th are the labels, dataset partitions are of shape: (number of instances in dataset partition,
+        number of features), labels are of shape: (number of instances in dataset partition, )
     """
-    Read mnist train and test data. Images are normalized to be in range [0,1]. Labels are one-hot coded.
-    """    
-
     train_imgs = load_idxfile("data/train-images-idx3-ubyte")
     train_imgs = train_imgs / 255.
-    train_imgs = train_imgs.reshape(-1,dim[0]*dim[1])
+    train_imgs = train_imgs.reshape(-1, dim[0]*dim[1])
 
     train_lbls = load_idxfile("data/train-labels-idx1-ubyte")
-    train_lbls_1hot = np.zeros((len(train_lbls),10),dtype=np.float32)
-    train_lbls_1hot[range(len(train_lbls)),train_lbls] = 1.
+    train_lbls_1hot = np.zeros((len(train_lbls), 10), dtype=np.float32)
+    train_lbls_1hot[range(len(train_lbls)), train_lbls] = 1.
 
     test_imgs = load_idxfile("data/t10k-images-idx3-ubyte")
     test_imgs = test_imgs / 255.
-    test_imgs = test_imgs.reshape(-1,dim[0]*dim[1])
+    test_imgs = test_imgs.reshape(-1, dim[0]*dim[1])
 
     test_lbls = load_idxfile("data/t10k-labels-idx1-ubyte")
-    test_lbls_1hot = np.zeros((len(test_lbls),10),dtype=np.float32)
-    test_lbls_1hot[range(len(test_lbls)),test_lbls] = 1.
+    test_lbls_1hot = np.zeros((len(test_lbls), 10), dtype=np.float32)
+    test_lbls_1hot[range(len(test_lbls)), test_lbls] = 1.
 
-    return train_imgs[:n_train],train_lbls_1hot[:n_train],test_imgs[:n_test],test_lbls_1hot[:n_test]
+    return train_imgs[:n_train], train_lbls_1hot[:n_train], test_imgs[:n_test], test_lbls_1hot[:n_test]
 
-def viz_rf(weights,it,ndim_hidden,grid):
 
+def viz_rf(weights, it, ndim_hidden, grid):
+    """  Visualize receptive fields and save
+
+    Parameters
+    ----------
+    weights : numpy.ndarray
+        The learnable weight parameters between the visible and the hidden layer.
+        Of shape (image width, image height, number of filters).
+    it : int
+        Epoch number of the weight snapshot.
+    ndim_hidden : int
+        Number of dimensions of the hidden layer.
+    grid : list
+        Grid width and height, for visualisation.
+
+    Returns
+    -------
+    None
     """
-    Visualize receptive fields and save 
-    """
-    fig, axs = plt.subplots(grid[0],grid[1],figsize=(grid[1],grid[0]))#,constrained_layout=True)
-    plt.subplots_adjust(left=0,bottom=0,right=1,top=1,wspace=0,hspace=0)        
+    fig, axs = plt.subplots(grid[0], grid[1], figsize=(grid[1], grid[0]))#,constrained_layout=True)
+    plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
     imax = abs(weights).max()
+
     for x in range(grid[0]):
         for y in range(grid[1]):
-            axs[x,y].set_xticks([]);
-            axs[x,y].set_yticks([]);
-            axs[x,y].imshow(weights[:,:,y+grid[1]*x], cmap="bwr", vmin=-imax, vmax=imax, interpolation=None)
+            axs[x, y].set_xticks([]);
+            axs[x, y].set_yticks([]);
+            axs[x, y].imshow(weights[:, :, y+grid[1]*x], cmap="bwr", vmin=-imax, vmax=imax, interpolation=None)
     plt.savefig("rbm_viz/rf.iter%d_hid%d.png"%(it, ndim_hidden))
     plt.close('all')
 
-def stitch_video(fig,imgs):
-    """
-    Stitches a list of images and returns a animation object
+
+def stitch_video(fig, imgs):
+    """  Stitches a list of images and returns a animation object
+
+    Parameters
+    ----------
+    fig : matplotlib.pyplot.Figure
+        Figure object.
+    imgs : list
+        List of images for stiching together.
+
+    Returns
+    -------
+    None
     """
     import matplotlib.animation as animation
     
