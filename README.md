@@ -18,15 +18,16 @@ Some of the code is credited to the TAs and lecturers of DD2437 Artificial Neura
 6. data/t10k-images-idx3-ubyte - MNIST test images
 data/t10k-labels-idx1-ubyte - MNIST test labels
 7. trained_rbm/ - Directory to store trained RBM model
-8. trained_dbn/ - Directory to store trained DBN model
-9. single_rbm/ - Directory to store figures of the reconstruction losses of different RBMs.
-10. rbm_viz/ - Directory to store the learned weights of different RBMs.
-11. rbm_dbn.ipynb - Notebook for a walkthrough and demo.
-12. litrature/ - Papers and documents that the code is based on.
-13. dbn_mp4/ - Directory to store an animation of generating digits from the trained DBN.
-14. docs/ - Sphinx docs of code.
+8. single_rbm/ - Directory to store figures of the reconstruction losses of different RBMs.
+9. rbm_viz/ - Directory to store the learned weights of different RBMs.
+10. rbm_dbn.ipynb - Notebook for a walkthrough and demo.
+11. litrature/ - Papers and documents that the code is based on.
+12. dbn_mp4/ - Directory to store an animation of generating digits from the trained DBN.
+13. docs/ - Sphinx docs of code.
     
-TODO: Implement the wake-sleep algorithm to fine-tune all the parameters of the DBN. 
+## TODO
+
+Implement the wake-sleep algorithm to fine-tune all the parameters of the DBN. 
 1. dbn.train_wakesleep_finetune() - main method for wake-sleep learning 
 2. rbm.update_generate_params() - updates the generative parameters (directed)
 3. rbm.update_recognize_params() - updates the recognition parameters (directed)	
