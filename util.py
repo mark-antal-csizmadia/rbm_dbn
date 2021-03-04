@@ -168,7 +168,7 @@ def viz_rf(weights, it, ndim_hidden, grid):
             axs[x, y].set_xticks([]);
             axs[x, y].set_yticks([]);
             axs[x, y].imshow(weights[:, :, y+grid[1]*x], cmap="bwr", vmin=-imax, vmax=imax, interpolation=None)
-    plt.savefig("rbm_viz/rf.iter%d_hid%d.png"%(it, ndim_hidden))
+    plt.savefig("rbm_viz/rf.iter%d_hid%d.png" % (it, ndim_hidden))
     plt.close('all')
 
 

@@ -165,7 +165,7 @@ class DeepBeliefNet():
         ax.set_xticks([]); ax.set_yticks([])
 
         lbl = true_lbl
-        np.random.seed(100)
+        np.random.seed(555)
         dummy_img = np.random.choice([0, 1], self.sizes['vis']).reshape(-1, self.sizes['vis'])
 
         # Fix the label in the label layer and run alternating Gibbs sampling in the top RBM.
@@ -188,7 +188,7 @@ class DeepBeliefNet():
                                         animated=True, interpolation=None) ] )
             
         anim = stitch_video(fig, records).save("dbn_mp4/%s.generate%d.mp4" % (name, np.argmax(true_lbl)))
-            
+
         return
 
     def train_greedylayerwise(self, vis_trainset, lbl_trainset, n_iterations):

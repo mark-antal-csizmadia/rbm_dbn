@@ -130,8 +130,11 @@ class RestrictedBoltzmannMachine():
         self.delta_bias_v = 0
         self.delta_weight_vh = 0
         self.delta_bias_h = 0
+        np.random.seed(111)
         self.bias_v = np.random.normal(loc=0.0, scale=0.01, size=(self.ndim_visible))
+        np.random.seed(222)
         self.weight_vh = np.random.normal(loc=0.0, scale=0.01, size=(self.ndim_visible, self.ndim_hidden))
+        np.random.seed(333)
         self.bias_h = np.random.normal(loc=0.0, scale=0.01, size=(self.ndim_hidden))
         self.delta_weight_v_to_h = 0
         self.delta_weight_h_to_v = 0        
@@ -142,6 +145,7 @@ class RestrictedBoltzmannMachine():
         self.print_period = 1
 
         # receptive-fields. Only applicable when visible layer is input data
+        np.random.seed(444)
         self.rf = {
             # iteration period to visualize
             "period": 5,

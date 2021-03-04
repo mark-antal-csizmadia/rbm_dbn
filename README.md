@@ -32,6 +32,10 @@ Implement the wake-sleep algorithm to fine-tune all the parameters of the DBN.
 2. rbm.update_generate_params() - updates the generative parameters (directed)
 3. rbm.update_recognize_params() - updates the recognition parameters (directed)	
 
+Implement momentum update for more efficient gradient-based optimization
+rbm.update_params(v_0, h_0, v_k, h_k)
+
+Improve weight initialization in rbm and dbn - right now just random normal with random seed set.
 
 ## Time to run
 
