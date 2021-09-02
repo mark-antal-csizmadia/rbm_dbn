@@ -1,5 +1,13 @@
 # rbm_dbn
 
+<a href="https://colab.research.google.com/github/mark-antal-csizmadia/rbm_dbn/blob/main/rbm_dbn.ipynb">
+  <img align="center" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+<a href="https://nbviewer.jupyter.org/github/mark-antal-csizmadia/rbm_dbn/blob/main/rbm_dbn.ipynb">
+  <img align="center" src="https://img.shields.io/badge/Jupyter-Open%20In%20nbviewer-informational?style=flat&logo=Jupyter&logoColor=F37626&color=blue" />
+</a>
+
 Restricted Boltzmann Machines (RBMs) and Deep Belief Networks (DBNs) from scratch for representation learning on the MNIST dataset.
 
 All of the code has been written based on "A Practical Guide to Training Restricted Boltzmann Machines" by Geoffrey Hinton and "A fast learning algorithm for deep belief nets" by Geoffrey Hinton et al. Both of the papers can be found at literature/.
